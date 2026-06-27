@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import Layout from '../components/Layout';
-import { Users, Upload, Plus, FileText, Check, AlertCircle, Database, HelpCircle, Calendar, X, Clock } from 'lucide-react';
+import { Users, Upload, Plus, FileText, Check, AlertCircle, Calendar, X, Clock } from 'lucide-react';
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('students');
@@ -327,63 +327,7 @@ export default function AdminDashboard() {
     }
   };
 
-  // SQL Script text to display to user
-  const sqlSetupScript = `-- 1. Habilita pgcrypto para encriptación de contraseñas si no está listo
-create extension if not exists pgcrypto;
 
--- 2. Crea la función para registrar alumnos desde el panel de administrador
-create or replace function admin_create_student(
-  student_dni text,
-  student_password text,
-  student_full_name text,
-  cycle_id uuid
-) returns uuid as $$
-declare
-  new_user_id uuid;
-  student_email text;
-begin
-  student_email := student_dni || '@ulema.edu.pe';
-  
-  -- Insert into auth.users (Supabase Auth table)
-  insert into auth.users (
-    instance_id,
-    id,
-    aud,
-    role,
-    email,
-    encrypted_password,
-    email_confirmed_at,
-    raw_app_meta_data,
-    raw_user_meta_data,
-    created_at,
-    updated_at
-  ) values (
-    '00000000-0000-0000-0000-000000000000',
-    gen_random_uuid(),
-    'authenticated',
-    'authenticated',
-    student_email,
-    crypt(student_password, gen_salt('bf')),
-    now(),
-    '{"provider": "email", "providers": ["email"]}',
-    jsonb_build_object('full_name', student_full_name, 'dni', student_dni),
-    now(),
-    now()
-  ) returning id into new_user_id;
-
-  -- Insert into public.profiles
-  insert into public.profiles (id, dni, full_name, role)
-  values (new_user_id, student_dni, student_full_name, 'student');
-
-  -- Insert enrollment if cycle_id is provided
-  if cycle_id is not null then
-    insert into public.enrollments (student_id, cycle_id)
-    values (new_user_id, cycle_id);
-  end if;
-
-  return new_user_id;
-end;
-$$ language plpgsql security definer;`;
 
   return (
     <Layout>
@@ -443,20 +387,6 @@ $$ language plpgsql security definer;`;
           >
             <Upload size={18} />
             Subir Clases
-          </button>
-
-          <button 
-            className="btn"
-            style={{
-              backgroundColor: activeTab === 'sql' ? 'var(--accent-red-muted)' : 'transparent',
-              color: activeTab === 'sql' ? 'var(--text-primary)' : 'var(--text-secondary)',
-              border: activeTab === 'sql' ? '1px solid var(--accent-red-border)' : '1px solid transparent',
-              fontSize: '0.9rem'
-            }}
-            onClick={() => setActiveTab('sql')}
-          >
-            <Database size={18} />
-            Configuración Base de Datos
           </button>
         </div>
 
@@ -885,50 +815,7 @@ $$ language plpgsql security definer;`;
           </div>
         )}
 
-        {/* Tab 3: Database & SQL Setup Guide */}
-        {activeTab === 'sql' && (
-          <div className="glass-panel" style={{ padding: '32px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
-              <div style={{ 
-                padding: '10px', 
-                backgroundColor: 'var(--accent-red-muted)', 
-                color: 'var(--accent-red)', 
-                borderRadius: '8px'
-              }}>
-                <Database size={24} />
-              </div>
-              <div>
-                <h3 style={{ fontSize: '1.25rem', marginBottom: '6px' }}>Instalación del script de administración en Supabase</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.5 }}>
-                  Supabase requiere una función de base de datos segura para permitir al dueño crear cuentas de estudiantes con contraseña sin cerrar sesión en el navegador. Copia el siguiente script y ejecútalo en la pestaña <strong>SQL Editor</strong> de tu panel de Supabase.
-                </p>
-              </div>
-            </div>
 
-            <div style={{ position: 'relative', marginTop: '12px' }}>
-              <pre style={{
-                backgroundColor: 'rgba(0, 0, 0, 0.4)',
-                border: '1px solid var(--border-color)',
-                borderRadius: '8px',
-                padding: '16px',
-                color: 'var(--text-secondary)',
-                fontSize: '0.85rem',
-                fontFamily: 'monospace',
-                overflowX: 'auto',
-                maxHeight: '260px'
-              }}>
-                {sqlSetupScript}
-              </pre>
-            </div>
-
-            <div style={{ display: 'flex', gap: '10px', alignItems: 'center', backgroundColor: '#f8fafc', padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
-              <HelpCircle size={18} color="var(--accent-red)" style={{ flexShrink: 0 }} />
-              <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                <strong>Nota:</strong> Asegúrate de tener también creadas las tablas base (\`profiles\`, \`cycles\`, \`enrollments\`, \`subjects\`, \`weeks\` y \`sessions\`) tal como se especifica en el plan de implementación aprobado.
-              </span>
-            </div>
-          </div>
-        )}
 
       </div>
 
