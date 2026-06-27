@@ -206,12 +206,12 @@ insert into public.subjects (cycle_id, name) values
   ('c3000000-0000-0000-0000-000000000003', 'Integrales y Aplicaciones');
 
 
--- 5. PRECARGA DE CUENTAS DE PRUEBA (SEEDS DE ADMINISTRADOR Y ESTUDIANTE CON SUS RESPECTIVAS IDENTIDADES)
+-- 5. PRECARGA DE CUENTAS DE PRUEBA (SEEDS DE ADMINISTRADOR CON SUS RESPECTIVAS IDENTIDADES)
 
 -- Limpiar usuarios de semilla anteriores de auth.users si ya existen para evitar conflictos e identidades huérfanas
 delete from auth.users where id in ('d0000000-0000-0000-0000-000000000000', 'e6163528-0000-0000-0000-000000002810');
 
--- A. ADMINISTRADOR PRINCIPAL: dayronfrankvallesena661@gmail.com / dayron47
+-- A. ADMINISTRADOR PRINCIPAL: ulema2026@gmail.com / grupoulema
 insert into auth.users (
   instance_id,
   id,
@@ -229,11 +229,11 @@ insert into auth.users (
   'd0000000-0000-0000-0000-000000000000',
   'authenticated',
   'authenticated',
-  'dayronfrankvallesena661@gmail.com',
-  crypt('dayron47', gen_salt('bf')),
+  'ulema2026@gmail.com',
+  crypt('grupoulema', gen_salt('bf')),
   now(),
   '{"provider": "email", "providers": ["email"]}',
-  '{"full_name": "Administrador Dayron", "dni": "dayron"}',
+  '{"full_name": "Administrador Ulema", "dni": "ulema2026"}',
   now(),
   now()
 );
@@ -250,72 +250,17 @@ insert into auth.identities (
 ) values (
   'd0000000-0000-0000-0000-000000000000',
   'd0000000-0000-0000-0000-000000000000',
-  '{"sub": "d0000000-0000-0000-0000-000000000000", "email": "dayronfrankvallesena661@gmail.com", "email_verified": true}',
+  '{"sub": "d0000000-0000-0000-0000-000000000000", "email": "ulema2026@gmail.com", "email_verified": true}',
   'email',
-  'dayronfrankvallesena661@gmail.com',
+  'ulema2026@gmail.com',
   now(),
   now(),
   now()
 );
 
 insert into public.profiles (id, dni, full_name, role)
-values ('d0000000-0000-0000-0000-000000000000', 'dayron', 'Administrador Dayron', 'admin')
+values ('d0000000-0000-0000-0000-000000000000', 'ulema2026', 'Administrador Ulema', 'admin')
 on conflict (id) do update set role = 'admin';
-
--- B. ESTUDIANTE DE PRUEBA: Aleman Bolt (61635281 / 61635281) matriculado en Repaso UNI
-insert into auth.users (
-  instance_id,
-  id,
-  aud,
-  role,
-  email,
-  encrypted_password,
-  email_confirmed_at,
-  raw_app_meta_data,
-  raw_user_meta_data,
-  created_at,
-  updated_at
-) values (
-  '00000000-0000-0000-0000-000000000000',
-  'e6163528-0000-0000-0000-000000002810',
-  'authenticated',
-  'authenticated',
-  '61635281@ulema.edu.pe',
-  crypt('61635281', gen_salt('bf')),
-  now(),
-  '{"provider": "email", "providers": ["email"]}',
-  '{"full_name": "Aleman Bolt", "dni": "61635281"}',
-  now(),
-  now()
-);
-
-insert into auth.identities (
-  id,
-  user_id,
-  identity_data,
-  provider,
-  provider_id,
-  last_sign_in_at,
-  created_at,
-  updated_at
-) values (
-  'e6163528-0000-0000-0000-000000002810',
-  'e6163528-0000-0000-0000-000000002810',
-  '{"sub": "e6163528-0000-0000-0000-000000002810", "email": "61635281@ulema.edu.pe", "email_verified": true}',
-  'email',
-  '61635281@ulema.edu.pe',
-  now(),
-  now(),
-  now()
-);
-
-insert into public.profiles (id, dni, full_name, role)
-values ('e6163528-0000-0000-0000-000000002810', '61635281', 'Aleman Bolt', 'student')
-on conflict (id) do nothing;
-
-insert into public.enrollments (student_id, cycle_id)
-values ('e6163528-0000-0000-0000-000000002810', 'c1000000-0000-0000-0000-000000000001')
-on conflict (student_id, cycle_id) do nothing;
 
 
 -- 6. POLÍTICAS DE SEGURIDAD (RLS)
