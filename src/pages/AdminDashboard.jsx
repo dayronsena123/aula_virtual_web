@@ -739,14 +739,44 @@ export default function AdminDashboard() {
                     disabled={!!videoFile}
                     style={{ marginBottom: '10px' }}
                   />
-                  <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textAlign: 'center', margin: '8px 0' }}>o selecciona un archivo de video local (.mp4)</div>
-                  <input 
-                    aria-label="Subir archivo local de video"
-                    type="file" 
-                    accept="video/mp4"
-                    onChange={(e) => setVideoFile(e.target.files[0])}
-                    style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'block', margin: '0 auto' }}
-                  />
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '10px' }}>
+                    <label 
+                      htmlFor="session-video-file" 
+                      className="btn btn-secondary hover-scale"
+                      style={{ 
+                        display: 'inline-flex',
+                        alignItems: 'center', 
+                        gap: '8px', 
+                        cursor: 'pointer',
+                        padding: '10px 16px',
+                        fontSize: '0.82rem',
+                        borderRadius: '8px',
+                        border: '2px dashed var(--accent-red-border)',
+                        backgroundColor: 'var(--accent-red-muted)',
+                        color: 'var(--accent-red)',
+                        width: '100%',
+                        justifyContent: 'center',
+                        fontWeight: 800,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px'
+                      }}
+                    >
+                      <Upload size={14} />
+                      {videoFile ? 'VIDEO SELECCIONADO' : 'SELECCIONAR VIDEO LOCAL (.MP4)'}
+                    </label>
+                    {videoFile && (
+                      <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '6px', fontWeight: 600, wordBreak: 'break-all' }}>
+                        {videoFile.name}
+                      </span>
+                    )}
+                    <input 
+                      id="session-video-file"
+                      type="file" 
+                      accept="video/mp4"
+                      onChange={(e) => setVideoFile(e.target.files[0])}
+                      style={{ display: 'none' }}
+                    />
+                  </div>
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px' }} id="admin-files-grid">
@@ -773,13 +803,44 @@ export default function AdminDashboard() {
                       />
                     </div>
                     <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textAlign: 'center', margin: '8px 0' }}>o selecciona un archivo local</div>
-                    <input 
-                      aria-label="Subir archivo local de problemas"
-                      type="file" 
-                      accept=".pdf,.ppt,.pptx,.doc,.docx,.png,.jpg,.jpeg,.zip"
-                      onChange={(e) => setProblemsFile(e.target.files[0])}
-                      style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}
-                    />
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                      <label 
+                        htmlFor="session-problems-file" 
+                        className="btn btn-secondary hover-scale"
+                        style={{ 
+                          display: 'inline-flex',
+                          alignItems: 'center', 
+                          gap: '8px', 
+                          cursor: 'pointer',
+                          padding: '10px 16px',
+                          fontSize: '0.82rem',
+                          borderRadius: '8px',
+                          border: '2px dashed var(--accent-red-border)',
+                          backgroundColor: 'var(--accent-red-muted)',
+                          color: 'var(--accent-red)',
+                          width: '100%',
+                          justifyContent: 'center',
+                          fontWeight: 800,
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.5px'
+                        }}
+                      >
+                        <Upload size={14} />
+                        {problemsFile ? 'MATERIAL SELECCIONADO' : 'SELECCIONAR ARCHIVO LOCAL'}
+                      </label>
+                      {problemsFile && (
+                        <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '6px', fontWeight: 600, wordBreak: 'break-all' }}>
+                          {problemsFile.name}
+                        </span>
+                      )}
+                      <input 
+                        id="session-problems-file"
+                        type="file" 
+                        accept=".pdf,.ppt,.pptx,.doc,.docx,.png,.jpg,.jpeg,.zip"
+                        onChange={(e) => setProblemsFile(e.target.files[0])}
+                        style={{ display: 'none' }}
+                      />
+                    </div>
                   </div>
 
                   {/* Theory/Class notes Material */}
@@ -798,13 +859,44 @@ export default function AdminDashboard() {
                       />
                     </div>
                     <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textAlign: 'center', margin: '8px 0' }}>o selecciona un archivo local</div>
-                    <input 
-                      aria-label="Subir archivo local de apuntes de clase"
-                      type="file" 
-                      accept=".pdf,.ppt,.pptx,.doc,.docx,.png,.jpg,.jpeg,.zip"
-                      onChange={(e) => setTheoryFile(e.target.files[0])}
-                      style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}
-                    />
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                      <label 
+                        htmlFor="session-theory-file" 
+                        className="btn btn-secondary hover-scale"
+                        style={{ 
+                          display: 'inline-flex',
+                          alignItems: 'center', 
+                          gap: '8px', 
+                          cursor: 'pointer',
+                          padding: '10px 16px',
+                          fontSize: '0.82rem',
+                          borderRadius: '8px',
+                          border: '2px dashed var(--accent-red-border)',
+                          backgroundColor: 'var(--accent-red-muted)',
+                          color: 'var(--accent-red)',
+                          width: '100%',
+                          justifyContent: 'center',
+                          fontWeight: 800,
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.5px'
+                        }}
+                      >
+                        <Upload size={14} />
+                        {theoryFile ? 'APUNTES SELECCIONADOS' : 'SELECCIONAR ARCHIVO LOCAL'}
+                      </label>
+                      {theoryFile && (
+                        <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '6px', fontWeight: 600, wordBreak: 'break-all' }}>
+                          {theoryFile.name}
+                        </span>
+                      )}
+                      <input 
+                        id="session-theory-file"
+                        type="file" 
+                        accept=".pdf,.ppt,.pptx,.doc,.docx,.png,.jpg,.jpeg,.zip"
+                        onChange={(e) => setTheoryFile(e.target.files[0])}
+                        style={{ display: 'none' }}
+                      />
+                    </div>
                   </div>
                 </div>
 
