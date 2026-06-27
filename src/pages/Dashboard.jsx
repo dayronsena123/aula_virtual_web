@@ -137,7 +137,7 @@ export default function Dashboard() {
 
   return (
     <Layout>
-      <div className="animate-fade-in">
+      <div className="animate-fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
         {/* Welcome Section */}
         <div 
           className="glass-panel" 
@@ -198,36 +198,44 @@ export default function Dashboard() {
         </div>
 
         {/* Navigation Tabs */}
-        <div style={{ display: 'flex', gap: '12px', borderBottom: '1px solid var(--border-color)', marginBottom: '32px' }}>
+        <div style={{ display: 'flex', gap: '12px', borderBottom: '2px solid var(--border-color)', marginBottom: '32px' }}>
           <button
             className="btn"
             style={{
               backgroundColor: activeTab === 'courses' ? 'var(--accent-red-muted)' : 'transparent',
-              color: activeTab === 'courses' ? 'var(--text-primary)' : 'var(--text-secondary)',
+              color: activeTab === 'courses' ? 'var(--accent-red)' : 'var(--text-secondary)',
               border: activeTab === 'courses' ? '1px solid var(--accent-red-border)' : '1px solid transparent',
-              fontSize: '0.9rem',
+              fontSize: '0.85rem',
+              fontWeight: 800,
+              textTransform: 'uppercase',
+              letterSpacing: '0.3px',
               borderRadius: '8px 8px 0 0',
-              padding: '12px 24px'
+              padding: '12px 24px',
+              transition: 'all 0.2s'
             }}
             onClick={() => setActiveTab('courses')}
           >
             <BookOpen size={18} />
-            Asignaturas
+            ASIGNATURAS
           </button>
           <button
             className="btn"
             style={{
               backgroundColor: activeTab === 'attendance' ? 'var(--accent-red-muted)' : 'transparent',
-              color: activeTab === 'attendance' ? 'var(--text-primary)' : 'var(--text-secondary)',
+              color: activeTab === 'attendance' ? 'var(--accent-red)' : 'var(--text-secondary)',
               border: activeTab === 'attendance' ? '1px solid var(--accent-red-border)' : '1px solid transparent',
-              fontSize: '0.9rem',
+              fontSize: '0.85rem',
+              fontWeight: 800,
+              textTransform: 'uppercase',
+              letterSpacing: '0.3px',
               borderRadius: '8px 8px 0 0',
-              padding: '12px 24px'
+              padding: '12px 24px',
+              transition: 'all 0.2s'
             }}
             onClick={() => setActiveTab('attendance')}
           >
             <Calendar size={18} />
-            Mi Asistencia
+            MI ASISTENCIA
           </button>
         </div>
 

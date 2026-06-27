@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import Layout from '../components/Layout';
-import { Users, Upload, Plus, FileText, Check, AlertCircle, Calendar, X, Clock } from 'lucide-react';
+import { Users, Upload, Plus, FileText, Check, AlertCircle, Calendar, X, Clock, Search, Trash2 } from 'lucide-react';
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('students');
@@ -38,6 +38,9 @@ export default function AdminDashboard() {
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [studentAttendance, setStudentAttendance] = useState([]);
   const [loadingAttendance, setLoadingAttendance] = useState(false);
+
+  // Search / Filter state
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     loadAdminData();
@@ -327,6 +330,30 @@ export default function AdminDashboard() {
     }
   };
 
+  // 5. Delete a student (profile, enrollments, attendance)
+  const handleDeleteStudent = async (student) => {
+    const confirm = window.confirm(`Estas seguro que deseas eliminar al alumno "${student.full_name}" (DNI: ${student.dni})? Esta accion no se puede deshacer.`);
+    if (!confirm) return;
+
+    try {
+      setLoading(true);
+      // Delete enrollments
+      await supabase.from('enrollments').delete().eq('student_id', student.id);
+      // Delete attendance
+      await supabase.from('attendance').delete().eq('student_id', student.id);
+      // Delete profile
+      const { error } = await supabase.from('profiles').delete().eq('id', student.id);
+      if (error) throw error;
+
+      setMsg({ type: 'success', text: `Alumno "${student.full_name}" eliminado correctamente.` });
+      setStudents(prev => prev.filter(s => s.id !== student.id));
+    } catch (err) {
+      console.error('Error deleting student:', err);
+      setMsg({ type: 'error', text: 'Error al eliminar: ' + err.message });
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
   return (
@@ -335,24 +362,25 @@ export default function AdminDashboard() {
         
         {/* Title */}
         <div>
-          <h1 style={{ fontSize: '2rem' }}>Panel de Administración</h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
-            Gestiona los estudiantes, sube materiales de clase y configura el aula virtual.
+          <h1 style={{ fontSize: '2rem', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-0.5px' }}>PANEL DE ADMINISTRACION</h1>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', fontWeight: 500 }}>
+            Gestiona estudiantes, sube materiales de clase y controla el aula virtual.
           </p>
         </div>
 
         {/* Status Messages */}
         {msg.text && (
-          <div style={{
-            backgroundColor: msg.type === 'success' ? 'rgba(34, 197, 94, 0.15)' : 'rgba(239, 68, 68, 0.15)',
-            border: msg.type === 'success' ? '1px solid rgba(34, 197, 94, 0.3)' : '1px solid rgba(239, 68, 68, 0.3)',
-            borderRadius: '8px',
+          <div className="animate-slide-up" style={{
+            backgroundColor: msg.type === 'success' ? 'rgba(34, 197, 94, 0.08)' : 'rgba(239, 68, 68, 0.08)',
+            border: msg.type === 'success' ? '1px solid rgba(34, 197, 94, 0.2)' : '1px solid rgba(239, 68, 68, 0.2)',
+            borderRadius: '10px',
             padding: '12px 16px',
-            color: msg.type === 'success' ? '#4ade80' : '#f87171',
-            fontSize: '0.9rem',
+            color: msg.type === 'success' ? '#16a34a' : '#ef4444',
+            fontSize: '0.88rem',
             display: 'flex',
             alignItems: 'center',
-            gap: '10px'
+            gap: '10px',
+            fontWeight: 600
           }}>
             {msg.type === 'success' ? <Check size={18} /> : <AlertCircle size={18} />}
             <span>{msg.text}</span>
@@ -360,33 +388,41 @@ export default function AdminDashboard() {
         )}
 
         {/* Navigation Tabs */}
-        <div style={{ display: 'flex', gap: '12px', borderBottom: '1px solid var(--border-color)', paddingBottom: '12px' }}>
+        <div style={{ display: 'flex', gap: '12px', borderBottom: '2px solid var(--border-color)', paddingBottom: '12px' }}>
           <button 
             className="btn"
             style={{
               backgroundColor: activeTab === 'students' ? 'var(--accent-red-muted)' : 'transparent',
-              color: activeTab === 'students' ? 'var(--text-primary)' : 'var(--text-secondary)',
+              color: activeTab === 'students' ? 'var(--accent-red)' : 'var(--text-secondary)',
               border: activeTab === 'students' ? '1px solid var(--accent-red-border)' : '1px solid transparent',
-              fontSize: '0.9rem'
+              fontSize: '0.85rem',
+              fontWeight: 800,
+              textTransform: 'uppercase',
+              letterSpacing: '0.3px',
+              transition: 'all 0.2s'
             }}
             onClick={() => setActiveTab('students')}
           >
             <Users size={18} />
-            Gestión de Alumnos
+            GESTION DE ALUMNOS
           </button>
 
           <button 
             className="btn"
             style={{
               backgroundColor: activeTab === 'classes' ? 'var(--accent-red-muted)' : 'transparent',
-              color: activeTab === 'classes' ? 'var(--text-primary)' : 'var(--text-secondary)',
+              color: activeTab === 'classes' ? 'var(--accent-red)' : 'var(--text-secondary)',
               border: activeTab === 'classes' ? '1px solid var(--accent-red-border)' : '1px solid transparent',
-              fontSize: '0.9rem'
+              fontSize: '0.85rem',
+              fontWeight: 800,
+              textTransform: 'uppercase',
+              letterSpacing: '0.3px',
+              transition: 'all 0.2s'
             }}
             onClick={() => setActiveTab('classes')}
           >
             <Upload size={18} />
-            Subir Clases
+            SUBIR CLASES
           </button>
         </div>
 
@@ -488,30 +524,53 @@ export default function AdminDashboard() {
             </div>
 
             {/* Right: Students List */}
-            <div className="glass-panel" style={{ padding: '24px', overflowX: 'auto' }}>
-              <h3 style={{ fontSize: '1.2rem', marginBottom: '16px', fontWeight: 700 }}>Alumnos Registrados</h3>
+            <div className="glass-panel animate-scale-in" style={{ padding: '24px', overflowX: 'auto' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', gap: '16px', flexWrap: 'wrap' }}>
+                <h3 style={{ fontSize: '1.2rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.3px' }}>Alumnos Registrados</h3>
+                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>{students.length} alumno{students.length !== 1 ? 's' : ''}</span>
+              </div>
+
+              {/* Search Bar */}
+              <div style={{ position: 'relative', marginBottom: '16px' }}>
+                <Search size={16} style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                <input 
+                  type="text"
+                  className="search-input"
+                  placeholder="Buscar por DNI o nombre..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
               
               <table className="admin-table">
                 <thead>
                   <tr>
-                    <th>DNI (Usuario)</th>
-                    <th>Nombre</th>
-                    <th>Ciclos Matriculados</th>
-                    <th>Acciones</th>
+                    <th>DNI (USUARIO)</th>
+                    <th>NOMBRE</th>
+                    <th>CICLOS MATRICULADOS</th>
+                    <th>ACCIONES</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {students.length === 0 ? (
-                    <tr>
-                      <td colSpan="4" style={{ textAlign: 'center', color: 'var(--text-muted)' }}>
-                        No hay estudiantes registrados todavía.
-                      </td>
-                    </tr>
-                  ) : (
-                    students.map(student => (
+                  {(() => {
+                    const filtered = students.filter(s => {
+                      if (!searchQuery.trim()) return true;
+                      const q = searchQuery.toLowerCase();
+                      return s.dni?.toLowerCase().includes(q) || s.full_name?.toLowerCase().includes(q);
+                    });
+                    if (filtered.length === 0) {
+                      return (
+                        <tr>
+                          <td colSpan="4" style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '32px 16px' }}>
+                            {searchQuery ? 'No se encontraron resultados para la busqueda.' : 'No hay estudiantes registrados todavia.'}
+                          </td>
+                        </tr>
+                      );
+                    }
+                    return filtered.map(student => (
                       <tr key={student.id}>
-                        <td style={{ fontWeight: 600 }}>{student.dni}</td>
-                        <td>{student.full_name}</td>
+                        <td style={{ fontWeight: 700, fontFamily: 'monospace', fontSize: '0.88rem' }}>{student.dni}</td>
+                        <td style={{ fontWeight: 600 }}>{student.full_name}</td>
                         <td>
                           {student.enrollments && student.enrollments.length > 0
                             ? student.enrollments.map(e => e.cycles?.name).join(', ')
@@ -519,18 +578,28 @@ export default function AdminDashboard() {
                           }
                         </td>
                         <td>
-                          <button 
-                            className="btn btn-secondary" 
-                            style={{ padding: '6px 12px', fontSize: '0.8rem' }}
-                            onClick={() => handleViewAttendance(student)}
-                          >
-                            <Calendar size={14} />
-                            Ver Asistencia
-                          </button>
+                          <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                            <button 
+                              className="btn btn-secondary" 
+                              style={{ padding: '6px 10px', fontSize: '0.78rem' }}
+                              onClick={() => handleViewAttendance(student)}
+                            >
+                              <Calendar size={13} />
+                              Asistencia
+                            </button>
+                            <button 
+                              className="btn-delete-subtle"
+                              onClick={() => handleDeleteStudent(student)}
+                              disabled={loading}
+                            >
+                              <Trash2 size={13} />
+                              Eliminar
+                            </button>
+                          </div>
                         </td>
                       </tr>
-                    ))
-                  )}
+                    ));
+                  })()}
                 </tbody>
               </table>
             </div>

@@ -88,7 +88,7 @@ export default function LoginPage() {
       }} />
 
       <div 
-        className="glass-panel" 
+        className="glass-panel animate-scale-in" 
         style={{
           width: '100%',
           maxWidth: '400px',
@@ -188,7 +188,7 @@ export default function LoginPage() {
 
           <button
             type="submit"
-            className="btn btn-primary"
+            className="btn btn-primary hover-scale"
             style={{ 
               width: '100%', 
               padding: '12px 16px', 
@@ -197,12 +197,14 @@ export default function LoginPage() {
               borderColor: 'var(--accent-red)',
               color: '#ffffff',
               fontSize: '0.92rem',
-              fontWeight: 600,
-              boxShadow: '0 4px 12px rgba(204, 13, 57, 0.18)'
+              fontWeight: 800,
+              boxShadow: '0 4px 12px rgba(204, 13, 57, 0.18)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px'
             }}
             disabled={loading}
           >
-            {loading ? 'Verificando...' : (isAdminLogin ? 'Ingresar al Panel' : 'Ingresar al Aula')}
+            {loading ? 'VERIFICANDO...' : (isAdminLogin ? 'INGRESAR AL PANEL' : 'INGRESAR AL AULA')}
           </button>
         </form>
 
