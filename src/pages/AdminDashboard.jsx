@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
+import { createClient } from '@supabase/supabase-js';
 import Layout from '../components/Layout';
 import { Users, Upload, Plus, FileText, Check, AlertCircle, Calendar, X, Clock, Search, Trash2 } from 'lucide-react';
 
@@ -118,7 +119,7 @@ export default function AdminDashboard() {
     setTimeout(() => setMsg({ type: '', text: '' }), 6000);
   };
 
-  // 1. Create Student using RPC SQL function helper
+  // 1. Create Student using Supabase Client API to avoid DB 500 errors
   const handleCreateStudent = async (e) => {
     e.preventDefault();
     const { dni, fullName, password, cycleId } = newStudent;
@@ -131,22 +132,63 @@ export default function AdminDashboard() {
     try {
       setLoading(true);
 
-      // Call the security definer Postgres function in Supabase
-      const { data, error } = await supabase.rpc('admin_create_student', {
-        student_dni: dni.trim(),
-        student_password: password,
-        student_full_name: fullName.trim(),
-        cycle_id: cycleId || null
+      // Crear cliente temporal sin guardar sesión en localStorage
+      const tempSupabase = createClient(
+        import.meta.env.VITE_SUPABASE_URL,
+        import.meta.env.VITE_SUPABASE_ANON_KEY,
+        {
+          auth: {
+            persistSession: false,
+            autoRefreshToken: false
+          }
+        }
+      );
+
+      const studentEmail = `${dni.trim()}@ulema.edu.pe`;
+
+      // Registrar al estudiante mediante la API oficial de Supabase
+      const { data, error: signUpError } = await tempSupabase.auth.signUp({
+        email: studentEmail,
+        password: password,
+        options: {
+          data: {
+            full_name: fullName.trim(),
+            dni: dni.trim(),
+            role: 'student'
+          }
+        }
       });
 
-      if (error) throw error;
+      if (signUpError) throw signUpError;
+
+      const newUserId = data.user?.id;
+      if (!newUserId) throw new Error('No se pudo obtener el ID del nuevo estudiante.');
+
+      // Confirmar el correo electrónico del estudiante usando el RPC seguro del admin
+      const { error: confirmError } = await supabase.rpc('admin_confirm_student_email', {
+        user_email: studentEmail
+      });
+
+      if (confirmError) throw confirmError;
+
+      // Vincular la matrícula en la tabla de matrículas
+      if (cycleId) {
+        const { error: enrollError } = await supabase
+          .from('enrollments')
+          .insert({
+            student_id: newUserId,
+            cycle_id: cycleId
+          });
+
+        if (enrollError) throw enrollError;
+      }
 
       showMessage('success', `Estudiante ${fullName} registrado con éxito.`);
       setNewStudent({ dni: '', fullName: '', password: '', cycleId: '' });
       loadAdminData();
     } catch (err) {
       console.error('Error creating student:', err);
-      showMessage('error', `Error al crear estudiante: ${err.message || 'Verifica que hayas corrido el script SQL inicial en Supabase'}`);
+      showMessage('error', `Error al crear estudiante: ${err.message || 'Ocurrió un error inesperado'}`);
     } finally {
       setLoading(false);
     }
