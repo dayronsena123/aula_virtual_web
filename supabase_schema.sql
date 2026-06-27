@@ -366,6 +366,16 @@ values
   ('videos', 'videos', false, null, null)
 on conflict (id) do update set public = excluded.public;
 
+-- Limpiar políticas viejas de storage para evitar errores de duplicado
+drop policy if exists "Cualquiera puede leer materiales" on storage.objects;
+drop policy if exists "Admins pueden subir materiales" on storage.objects;
+drop policy if exists "Admins pueden actualizar materiales" on storage.objects;
+drop policy if exists "Admins pueden borrar materiales" on storage.objects;
+drop policy if exists "Alumnos pueden leer videos" on storage.objects;
+drop policy if exists "Admins pueden subir videos" on storage.objects;
+drop policy if exists "Admins pueden actualizar videos" on storage.objects;
+drop policy if exists "Admins pueden borrar videos" on storage.objects;
+
 create policy "Cualquiera puede leer materiales" on storage.objects
   for select using (bucket_id = 'materials');
 
