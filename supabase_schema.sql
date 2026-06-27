@@ -209,7 +209,7 @@ insert into public.subjects (cycle_id, name) values
 -- 5. PRECARGA DE CUENTAS DE PRUEBA (SEEDS DE ADMINISTRADOR CON SUS RESPECTIVAS IDENTIDADES)
 
 -- Limpiar usuarios de semilla anteriores de auth.users si ya existen para evitar conflictos e identidades huérfanas
-delete from auth.users where id in ('d0000000-0000-0000-0000-000000000000', 'e6163528-0000-0000-0000-000000002810');
+delete from auth.users where id in ('d0000000-0000-0000-0000-000000000000', 'e6163528-0000-0000-0000-000000002810') or email in ('ulema2026@gmail.com', 'dayronfrankvallesena661@gmail.com', '61635281@ulema.edu.pe');
 
 -- A. ADMINISTRADOR PRINCIPAL: ulema2026@gmail.com / grupoulema
 insert into auth.users (
