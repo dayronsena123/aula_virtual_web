@@ -166,7 +166,7 @@ begin
     new_user_id,
     jsonb_build_object('sub', new_user_id::text, 'email', student_email, 'email_verified', true),
     'email',
-    student_email,
+    new_user_id::text,
     now(),
     now(),
     now()
