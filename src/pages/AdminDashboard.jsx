@@ -530,7 +530,27 @@ $$ language plpgsql security definer;`;
                   </select>
                 </div>
 
-                <button type="submit" className="btn btn-primary" style={{ width: '100%', marginTop: '8px' }} disabled={loading}>
+                <button 
+                  type="submit" 
+                  className="btn btn-primary" 
+                  style={{ 
+                    width: '100%', 
+                    marginTop: '16px',
+                    padding: '12px',
+                    fontSize: '0.88rem',
+                    fontWeight: 800,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px',
+                    backgroundColor: 'var(--accent-red)',
+                    borderColor: 'var(--accent-red)',
+                    boxShadow: '0 4px 12px rgba(204, 13, 57, 0.15)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px'
+                  }} 
+                  disabled={loading}
+                >
                   <Plus size={18} />
                   Crear Estudiante
                 </button>
@@ -792,10 +812,24 @@ $$ language plpgsql security definer;`;
                 <button 
                   type="submit" 
                   className="btn btn-primary" 
-                  style={{ width: '100%', marginTop: '32px' }} 
+                  style={{ 
+                    width: '100%', 
+                    marginTop: '32px',
+                    padding: '14px',
+                    fontSize: '0.92rem',
+                    fontWeight: 800,
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px',
+                    backgroundColor: 'var(--accent-red)',
+                    borderColor: 'var(--accent-red)',
+                    boxShadow: '0 4px 15px rgba(204, 13, 57, 0.2)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }} 
                   disabled={!selectedWeekId || loading}
                 >
-                  Guardar Clase y Materiales
+                  {loading ? 'Guardando Clase...' : 'Guardar Clase y Materiales'}
                 </button>
               </form>
 
