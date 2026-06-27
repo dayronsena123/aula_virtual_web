@@ -16,7 +16,7 @@ export default function AdminDashboard() {
   const [weeks, setWeeks] = useState([]);
 
   // Form states - Create Student
-  const [newStudent, setNewStudent] = useState({ dni: '', fullName: '', password: '', cycleId: '' });
+  const [newStudent, setNewStudent] = useState({ dni: '', fullName: '', cycleId: '' });
 
   // Form states - Upload Class
   const [selectedCycleId, setSelectedCycleId] = useState('');
@@ -122,10 +122,11 @@ export default function AdminDashboard() {
   // 1. Create Student using Supabase Client API to avoid DB 500 errors
   const handleCreateStudent = async (e) => {
     e.preventDefault();
-    const { dni, fullName, password, cycleId } = newStudent;
+    const { dni, fullName, cycleId } = newStudent;
+    const password = dni.trim(); // La contraseña es siempre igual al DNI
 
-    if (!dni || !fullName || !password) {
-      showMessage('error', 'Por favor completa todos los campos del estudiante.');
+    if (!dni || !fullName) {
+      showMessage('error', 'Por favor completa el DNI y el nombre del estudiante.');
       return;
     }
 
@@ -183,8 +184,8 @@ export default function AdminDashboard() {
         if (enrollError) throw enrollError;
       }
 
-      showMessage('success', `Estudiante ${fullName} registrado con éxito.`);
-      setNewStudent({ dni: '', fullName: '', password: '', cycleId: '' });
+      showMessage('success', `Estudiante ${fullName} registrado con exito. Usuario: ${dni.trim()} - Contrasena: ${dni.trim()}`);
+      setNewStudent({ dni: '', fullName: '', cycleId: '' });
       loadAdminData();
     } catch (err) {
       console.error('Error creating student:', err);
@@ -510,17 +511,10 @@ export default function AdminDashboard() {
                   />
                 </div>
 
-                <div className="form-group">
-                  <label className="form-label" htmlFor="student-pass">Contraseña Inicial</label>
-                  <input 
-                    id="student-pass"
-                    type="text" 
-                    className="form-input" 
-                    placeholder="Min. 6 caracteres"
-                    value={newStudent.password}
-                    onChange={(e) => setNewStudent({...newStudent, password: e.target.value})}
-                    required
-                  />
+                <div className="form-group" style={{ background: 'var(--accent-red-muted)', border: '1px solid var(--accent-red-border)', borderRadius: '8px', padding: '10px 14px' }}>
+                  <p style={{ fontSize: '0.8rem', color: 'var(--accent-red)', fontWeight: 700, margin: 0 }}>
+                    La contrasena inicial del alumno sera su mismo DNI
+                  </p>
                 </div>
 
                 <div className="form-group">
