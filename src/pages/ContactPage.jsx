@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Phone, Mail, MapPin, MessageCircle } from 'lucide-react';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 function useScrollReveal() {
   const ref = useRef(null);
@@ -145,6 +146,8 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 function useScrollReveal() {
   const ref = useRef(null);
@@ -133,6 +134,8 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }

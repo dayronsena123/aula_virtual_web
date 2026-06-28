@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen, CheckCircle2, MessageCircle, ChevronRight, Search } from 'lucide-react';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 function useScrollReveal() {
   const ref = useRef(null);
@@ -343,6 +344,8 @@ export default function CyclesPage() {
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }
