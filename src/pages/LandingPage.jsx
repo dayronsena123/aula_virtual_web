@@ -714,8 +714,8 @@ export default function LandingPage() {
       <section id="docente" style={{ padding: '120px 0 100px 0', backgroundColor: '#f8fafc', borderTop: '1px solid var(--border-color)', position: 'relative', zIndex: 1 }}>
         <div className="container" style={{ maxWidth: '800px' }}>
           <div className="scroll-reveal" style={{ textAlign: 'center', marginBottom: '60px' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent-red)', textTransform: 'uppercase', letterSpacing: '2px', display: 'block', marginBottom: '10px' }}>NUESTRO DOCENTE</span>
-            <h2 style={{ fontSize: '2.1rem', color: 'var(--text-primary)', fontWeight: 900, letterSpacing: '-0.8px', textTransform: 'uppercase' }}>DOCENTE PRINCIPAL Y FUNDADOR</h2>
+            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent-red)', textTransform: 'uppercase', letterSpacing: '2px', display: 'block', marginBottom: '10px' }}>NUESTRO FUNDADOR</span>
+            <h2 style={{ fontSize: '2.1rem', color: 'var(--text-primary)', fontWeight: 900, letterSpacing: '-0.8px', textTransform: 'uppercase' }}>FUNDADOR Y DIRECTOR</h2>
             <div style={{ width: '60px', height: '3px', backgroundColor: 'var(--accent-red)', margin: '14px auto 0 auto', borderRadius: '2px' }} />
           </div>
 
@@ -761,7 +761,7 @@ export default function LandingPage() {
                 textTransform: 'uppercase',
                 letterSpacing: '1px'
               }}>
-                Docente UNI
+                Fundador Ulema
               </span>
 
               <h3 style={{ fontSize: '1.8rem', fontWeight: 900, color: 'var(--text-primary)', marginTop: '16px', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '-0.5px' }}>
@@ -774,10 +774,10 @@ export default function LandingPage() {
 
               <div style={{ maxWidth: '600px', margin: '0 auto', color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.7, fontWeight: 500 }}>
                 <p style={{ marginBottom: '16px' }}>
-                  Estudiante y destacado docente de la <strong>UNI</strong>, con una trayectoria impecable en la enseñanza de las matemáticas. Especializado tanto en la preparación de nivel preuniversitario como en el dictado de cursos universitarios de Cálculo Diferencial e Integral.
+                  Estudiante de la <strong>UNI</strong> con una trayectoria impecable en la enseñanza de las matemáticas. Como fundador de <strong>Ulema</strong>, lidera un equipo de docentes altamente calificados especializados en la preparación preuniversitaria y en cursos universitarios de Cálculo Diferencial e Integral.
                 </p>
                 <p>
-                  Su método riguroso y dinámico asegura que el estudiante adquiera una base sólida, enfocándose en la resolución de problemas con lógica y precisión para garantizar el máximo rendimiento académico y el ingreso a las universidades más exigentes del país.
+                  Su visión y rigurosidad aseguran que cada ciclo cuente con la mejor plana docente y una metodología enfocada en desarrollar el pensamiento crítico de los estudiantes, garantizando el máximo rendimiento académico.
                 </p>
               </div>
             </div>
