@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, GraduationCap, ChevronRight, CheckCircle2, Shield, MessageCircle, Phone, Mail, MapPin, ArrowRight, Menu, X } from 'lucide-react';
+import { ChevronRight, MessageCircle, ArrowRight } from 'lucide-react';
+import Navbar from '../components/Navbar';
 
-// Scroll animation hook
 function useScrollReveal() {
   const ref = useRef(null);
   useEffect(() => {
@@ -27,85 +27,7 @@ function useScrollReveal() {
 export default function LandingPage() {
   const navigate = useNavigate();
   const pageRef = useScrollReveal();
-
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [expandedCycles, setExpandedCycles] = useState({});
-
-  const toggleCycleExpansion = (index) => {
-    setExpandedCycles(prev => ({
-      ...prev,
-      [index]: !prev[index]
-    }));
-  };
-
   const whatsappNumber = "51907040190";
-  const getWhatsappLink = (cycleName) => {
-    const text = encodeURIComponent(`Hola, deseo solicitar información e inscribirme en el ciclo: ${cycleName} del Grupo de Estudio ULEMA.`);
-    return `https://wa.me/${whatsappNumber}?text=${text}`;
-  };
-
-  const cycles = [
-    {
-      title: "Matemáticas desde Cero",
-      description: "Construye hoy tu base, asegura tu futuro universitario y domina las matemáticas paso a paso.",
-      subjects: ["Aritmética desde Cero", "Álgebra", "Geometría", "Trigonometría"],
-      badge: "CICLO BASE",
-      price: "S/. 39",
-      features: [
-        "1 hora diaria en vivo (Lunes a Viernes 7:00 PM - 8:00 PM)",
-        "Acceso ilimitado a grabaciones de clases las 24 horas",
-        "Pizarras virtuales de cada sesión en formato PDF",
-        "Sistema de constancia y participación interactiva",
-        "Sorteos trimestrales de tablets, becas y más"
-      ]
-    },
-    {
-      title: "Repaso Intensivo UNI (Matemática)",
-      description: "Preparación avanzada con foco en el examen de admisión UNI. Domina los temas más recurrentes del temario de matemáticas.",
-      subjects: ["Álgebra", "Aritmética", "Geometría", "Trigonometría"],
-      badge: "PREUNIVERSITARIO",
-      price: "S/.",
-      features: [
-        "Resolución guiada de exámenes de admisión UNI anteriores",
-        "Ejercicios y problemas selectos de nivel avanzado",
-        "Material académico descargable en formato PDF",
-        "Asignaturas completas con docentes especializados"
-      ]
-    },
-    {
-      title: "Cálculo Diferencial",
-      description: "Curso teórico-práctico de nivel universitario enfocado en el análisis de funciones, límites, continuidad y derivadas.",
-      subjects: ["Funciones reales", "Límites y Continuidad", "Derivadas y Reglas", "Aplicaciones de la derivada"],
-      badge: "UNIVERSITARIO",
-      price: "S/.",
-      features: [
-        "Temario adaptado al currículo universitario nacional",
-        "Explicación teórica paso a paso de fórmulas y teoremas",
-        "Prácticas y exámenes pasados resueltos en vivo",
-        "Material de apuntes teóricos y pizarras virtuales"
-      ]
-    },
-    {
-      title: "Cálculo Integral",
-      description: "Domina las técnicas de integración, teoremas fundamentales del cálculo y sus aplicaciones en áreas, volúmenes y física.",
-      subjects: ["Integrales Indefinidas", "Métodos de Integración", "Integral Definida", "Áreas y Volúmenes de Revolución"],
-      badge: "UNIVERSITARIO",
-      price: "S/.",
-      features: [
-        "Análisis profundo de técnicas de integración avanzada",
-        "Aplicación física y geométrica de las integrales",
-        "Soporte con diapositivas y pizarras digitales PDF",
-        "Ejercicios resueltos de alta complejidad de exámenes reales"
-      ]
-    }
-  ];
-
-  const scrollToSection = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   return (
     <div ref={pageRef} style={{ 
@@ -116,122 +38,7 @@ export default function LandingPage() {
       position: 'relative',
       overflowX: 'hidden'
     }}>
-      {/* Inline Styles for scroll-reveal animations */}
-      <style dangerouslySetInnerHTML={{__html: `
-        .scroll-reveal {
-          opacity: 0;
-          transform: translateY(28px);
-          transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .scroll-reveal.revealed {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        .scroll-reveal.delay-1 { transition-delay: 0.1s; }
-        .scroll-reveal.delay-2 { transition-delay: 0.2s; }
-        .scroll-reveal.delay-3 { transition-delay: 0.3s; }
-        .scroll-reveal.delay-4 { transition-delay: 0.4s; }
-
-        .hero-title {
-          animation: heroFadeIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-          opacity: 0;
-        }
-        .hero-subtitle {
-          animation: heroFadeIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
-          opacity: 0;
-        }
-        .hero-cta {
-          animation: heroFadeIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
-          opacity: 0;
-        }
-        .hero-banner {
-          animation: heroFadeIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.05s forwards;
-          opacity: 0;
-        }
-        @keyframes heroFadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-
-        .cycle-card {
-          transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
-        }
-        .cycle-card:hover {
-          transform: translateY(-8px) !important;
-          box-shadow: 0 20px 50px rgba(204, 13, 57, 0.06), 0 0 0 1px rgba(204, 13, 57, 0.1) !important;
-          border-color: rgba(204, 13, 57, 0.15) !important;
-        }
-
-        .contact-card {
-          transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-        }
-        .contact-card:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04);
-          border-color: rgba(204, 13, 57, 0.12);
-        }
-
-        .stat-item {
-          transition: transform 0.3s ease;
-        }
-        .stat-item:hover {
-          transform: scale(1.05);
-        }
-
-        .nav-link-btn {
-          background: none;
-          border: none;
-          color: var(--text-primary);
-          font-weight: 600;
-          font-size: 0.9rem;
-          cursor: pointer;
-          position: relative;
-          padding: 6px 0;
-          transition: color 0.2s;
-        }
-        .nav-link-btn::after {
-          content: '';
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 0%;
-          height: 2px;
-          background: var(--accent-red);
-          transition: width 0.3s ease;
-          border-radius: 2px;
-        }
-        .nav-link-btn:hover {
-          color: var(--accent-red);
-        }
-        .nav-link-btn:hover::after {
-          width: 100%;
-        }
-
-        .whatsapp-float {
-          animation: floatBounce 3s ease-in-out infinite;
-        }
-        @keyframes floatBounce {
-          0%, 100% { transform: translateY(0) scale(1); }
-          50% { transform: translateY(-5px) scale(1.05); }
-        }
-
-        @media (max-width: 991px) {
-          #landing-navbar {
-            display: none !important;
-          }
-          #landing-action-buttons {
-            display: none !important;
-          }
-          #hamburger-menu-btn {
-            display: flex !important;
-          }
-        }
-        @media (max-width: 768px) {
-          .hero-heading {
-            font-size: 2.2rem !important;
-          }
-        }
-      `}} />
+      <Navbar />
 
       {/* Decorative Background Elements */}
       <div style={{
@@ -259,193 +66,6 @@ export default function LandingPage() {
         zIndex: 0
       }} />
 
-      {/* Navigation Header */}
-      <header style={{ 
-        borderBottom: '1px solid var(--border-color)', 
-        padding: '16px 0', 
-        position: 'sticky', 
-        top: 0, 
-        backgroundColor: 'rgba(255, 255, 255, 0.95)', 
-        backdropFilter: 'blur(16px)',
-        zIndex: 50,
-        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.02)'
-      }}>
-        <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'relative' }}>
-          {/* Logo */}
-          <div style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer', zIndex: 51 }} onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setMenuOpen(false); }}>
-            <span style={{ fontSize: '1.6rem', fontWeight: 900, color: 'var(--text-primary)', letterSpacing: '-0.5px', lineHeight: 1.1 }}>ULEMA</span>
-            <span style={{ fontSize: '0.68rem', color: 'var(--accent-red)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1.5px' }}>
-              Grupo de Estudio
-            </span>
-          </div>
-
-          {/* Navigation Links (Desktop) */}
-          <nav style={{ display: 'flex', gap: '28px', alignItems: 'center' }} id="landing-navbar">
-            <button className="nav-link-btn" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-              Inicio
-            </button>
-            <button className="nav-link-btn" onClick={() => scrollToSection('ciclos')}>
-              Ciclos
-            </button>
-            <button className="nav-link-btn" onClick={() => scrollToSection('docente')}>
-              Sobre nosotros
-            </button>
-            <button className="nav-link-btn" onClick={() => scrollToSection('contacto')}>
-              Contacto
-            </button>
-          </nav>
-          
-          {/* Action Buttons (Desktop) */}
-          <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }} id="landing-action-buttons">
-            <button 
-              onClick={() => navigate('/login')} 
-              className="btn btn-primary"
-              style={{ 
-                padding: '8px 22px', 
-                fontSize: '0.85rem', 
-                backgroundColor: 'var(--accent-red)',
-                borderColor: 'var(--accent-red)',
-                color: '#ffffff',
-                boxShadow: '0 4px 10px rgba(204, 13, 57, 0.18)',
-                fontWeight: 700,
-                borderRadius: '8px'
-              }}
-            >
-              Aula Virtual
-              <ChevronRight size={16} />
-            </button>
-
-            <button 
-              onClick={() => navigate('/login?admin=true')} 
-              style={{ 
-                background: 'none', 
-                border: 'none', 
-                color: 'var(--text-secondary)', 
-                fontSize: '0.82rem', 
-                fontWeight: 600, 
-                cursor: 'pointer',
-                transition: 'color 0.2s',
-                textDecoration: 'underline'
-              }}
-              onMouseEnter={(e) => e.target.style.color = 'var(--text-primary)'}
-              onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}
-            >
-              Panel Admin
-            </button>
-          </div>
-
-          {/* Hamburger Menu Button (Mobile) */}
-          <button
-            id="hamburger-menu-btn"
-            onClick={() => setMenuOpen(!menuOpen)}
-            style={{
-              display: 'none',
-              background: 'none',
-              border: 'none',
-              color: 'var(--text-primary)',
-              cursor: 'pointer',
-              padding: '6px',
-              zIndex: 51,
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
-          >
-            {menuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-
-          {/* Mobile Menu Dropdown Panel */}
-          {menuOpen && (
-            <div style={{
-              position: 'absolute',
-              top: 'calc(100% + 16px)',
-              left: '16px',
-              right: '16px',
-              backgroundColor: '#ffffff',
-              borderRadius: '16px',
-              border: '1px solid var(--border-color)',
-              boxShadow: '0 15px 35px rgba(0,0,0,0.08)',
-              padding: '24px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '16px',
-              zIndex: 49,
-              animation: 'heroFadeIn 0.2s ease-out forwards'
-            }}>
-              <button 
-                className="nav-link-btn" 
-                style={{ textAlign: 'left', width: '100%', padding: '10px 0' }}
-                onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setMenuOpen(false); }}
-              >
-                Inicio
-              </button>
-              <button 
-                className="nav-link-btn" 
-                style={{ textAlign: 'left', width: '100%', padding: '10px 0' }}
-                onClick={() => { scrollToSection('ciclos'); setMenuOpen(false); }}
-              >
-                Ciclos
-              </button>
-              <button 
-                className="nav-link-btn" 
-                style={{ textAlign: 'left', width: '100%', padding: '10px 0' }}
-                onClick={() => { scrollToSection('docente'); setMenuOpen(false); }}
-              >
-                Sobre nosotros
-              </button>
-              <button 
-                className="nav-link-btn" 
-                style={{ textAlign: 'left', width: '100%', padding: '10px 0' }}
-                onClick={() => { scrollToSection('contacto'); setMenuOpen(false); }}
-              >
-                Contacto
-              </button>
-              
-              <div style={{ height: '1px', backgroundColor: 'var(--border-color)', margin: '4px 0' }} />
-
-              <button 
-                onClick={() => { navigate('/login'); setMenuOpen(false); }} 
-                className="btn btn-primary"
-                style={{ 
-                  width: '100%',
-                  padding: '12px', 
-                  fontSize: '0.9rem', 
-                  backgroundColor: 'var(--accent-red)',
-                  borderColor: 'var(--accent-red)',
-                  color: '#ffffff',
-                  boxShadow: '0 4px 10px rgba(204, 13, 57, 0.18)',
-                  fontWeight: 700,
-                  borderRadius: '8px',
-                  justifyContent: 'center',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px'
-                }}
-              >
-                Aula Virtual
-                <ChevronRight size={16} />
-              </button>
-
-              <button 
-                onClick={() => { navigate('/login?admin=true'); setMenuOpen(false); }} 
-                style={{ 
-                  background: 'none', 
-                  border: 'none', 
-                  color: 'var(--text-secondary)', 
-                  fontSize: '0.88rem', 
-                  fontWeight: 700, 
-                  cursor: 'pointer',
-                  textAlign: 'center',
-                  padding: '10px 0',
-                  textDecoration: 'underline'
-                }}
-              >
-                Panel Admin
-              </button>
-            </div>
-          )}
-        </div>
-      </header>
-
       {/* Hero Section */}
       <section style={{ 
         padding: '90px 0 100px 0', 
@@ -456,14 +76,14 @@ export default function LandingPage() {
         <div className="container" style={{ maxWidth: '850px' }}>
           {/* Logo UNI Banner */}
           <div className="hero-banner" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', marginBottom: '36px' }}>
-            <span style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1.5px' }}>PREPARACION DE ALTO NIVEL CON ENFOQUE EN LA:</span>
+            <span style={{ fontSize: '0.78rem', fontWeight: 800, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '1.5px' }}>PREPARACIÓN DE ALTO NIVEL CON ENFOQUE EN LA:</span>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '12px', padding: '8px 20px', backgroundColor: '#ffffff', border: '1px solid var(--border-color)', borderRadius: '30px', boxShadow: '0 4px 12px rgba(0,0,0,0.03)' }}>
               <img 
                 src="/uni-logo.png" 
                 alt="Logo UNI" 
                 style={{ height: '38px', width: 'auto', objectFit: 'contain' }} 
               />
-              <span style={{ fontSize: '0.92rem', fontWeight: 900, color: '#7a1921', letterSpacing: '0.5px' }}>UNIVERSIDAD NACIONAL DE INGENIERIA</span>
+              <span style={{ fontSize: '0.92rem', fontWeight: 900, color: '#7a1921', letterSpacing: '0.5px' }}>UNIVERSIDAD NACIONAL DE INGENIERÍA</span>
             </div>
           </div>
           
@@ -480,16 +100,16 @@ export default function LandingPage() {
           </h1>
           
           <p className="hero-subtitle" style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', marginBottom: '40px', lineHeight: 1.6, fontWeight: 500 }}>
-            Accede a tus clases grabadas en alta definicion, materiales didacticos, guias de problemas selectos y pizarras virtuales. Todo disponible 24/7 en tu intranet de estudios.
+            Accede a tus clases grabadas en alta definición, materiales didácticos, guías de problemas selectos y pizarras virtuales. Todo disponible 24/7 en tu intranet de estudios.
           </p>
 
           <div className="hero-cta" style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <button 
-              onClick={() => navigate('/login')} 
+              onClick={() => navigate('/ciclos')} 
               className="btn btn-primary hover-scale" 
               style={{ padding: '14px 32px', fontSize: '1rem', backgroundColor: 'var(--accent-red)', borderColor: 'var(--accent-red)', color: '#ffffff', fontWeight: 700, boxShadow: '0 6px 20px rgba(204, 13, 57, 0.22)', textTransform: 'uppercase', letterSpacing: '0.5px' }}
             >
-              INGRESAR AL AULA
+              VER CICLOS DISPONIBLES
               <ArrowRight size={18} />
             </button>
             <a 
@@ -524,7 +144,7 @@ export default function LandingPage() {
           }}>
             <div className="scroll-reveal stat-item" style={{ padding: '20px' }}>
               <h3 style={{ fontSize: '2.6rem', color: 'var(--accent-red)', fontWeight: 800 }}>24/7</h3>
-              <p style={{ fontSize: '0.92rem', color: 'var(--text-secondary)', marginTop: '4px', fontWeight: 600 }}>Clases disponibles todo el dia</p>
+              <p style={{ fontSize: '0.92rem', color: 'var(--text-secondary)', marginTop: '4px', fontWeight: 600 }}>Clases disponibles todo el día</p>
             </div>
             <div className="scroll-reveal delay-1 stat-item" style={{ padding: '20px' }}>
               <h3 style={{ fontSize: '2.6rem', color: 'var(--text-primary)', fontWeight: 800 }}>100%</h3>
@@ -538,352 +158,36 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Cycles Section */}
-      <section id="ciclos" style={{ padding: '100px 0', zIndex: 1, position: 'relative' }}>
-        <div className="container">
-          <div className="scroll-reveal" style={{ textAlign: 'center', marginBottom: '60px' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent-red)', textTransform: 'uppercase', letterSpacing: '2px', display: 'block', marginBottom: '10px' }}>FORMACION ACADEMICA</span>
-            <h2 style={{ fontSize: '2.2rem', marginBottom: '16px', color: 'var(--text-primary)', fontWeight: 900, letterSpacing: '-0.8px', textTransform: 'uppercase' }}>NUESTROS CICLOS DE PREPARACION</h2>
-            <div style={{ width: '60px', height: '3px', backgroundColor: 'var(--accent-red)', margin: '0 auto 20px auto', borderRadius: '2px' }} />
-            <p style={{ maxWidth: '600px', margin: '0 auto', color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.6, fontWeight: 500 }}>
-              Elige el ciclo que se adapte a tu objetivo academico. Todos los cursos cuentan con acceso completo a las clases grabadas y pizarras de clase.
-            </p>
-          </div>
-
-          <div className="grid-3">
-            {cycles.map((cycle, index) => (
-              <div 
-                key={index} 
-                className={`glass-panel cycle-card scroll-reveal delay-${index + 1}`}
-                style={{ 
-                  padding: '36px 32px', 
-                  display: 'flex', 
-                  flexDirection: 'column', 
-                  justifyContent: 'space-between',
-                  minHeight: '440px',
-                  backgroundColor: '#ffffff',
-                  border: '1px solid var(--border-color)',
-                  borderRadius: '16px',
-                  boxShadow: '0 8px 30px rgba(0, 0, 0, 0.02)'
-                }}
-              >
-                <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                    <span style={{ 
-                      fontSize: '0.7rem', 
-                      backgroundColor: 'var(--accent-red-muted)', 
-                      padding: '6px 14px', 
-                      borderRadius: '20px',
-                      color: 'var(--accent-red)',
-                      fontWeight: 800,
-                      letterSpacing: '0.5px',
-                      textTransform: 'uppercase'
-                    }}>
-                      {cycle.badge}
-                    </span>
-                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-                      <span style={{ fontSize: '1.25rem', fontWeight: 900, color: 'var(--text-primary)' }}>
-                        {cycle.price}
-                      </span>
-                      {cycle.price === "S/. 39" && (
-                        <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>/ mes</span>
-                      )}
-                    </div>
-                  </div>
-
-                  <h3 style={{ fontSize: '1.3rem', marginBottom: '12px', lineHeight: 1.3, color: 'var(--text-primary)', fontWeight: 800 }}>
-                    {cycle.title}
-                  </h3>
-                  
-                  <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '16px', lineHeight: 1.5, fontWeight: 500 }}>
-                    {cycle.description}
-                  </p>
-
-                  {/* Toggle Collapsible Details (Ver más) */}
-                  <div style={{ marginBottom: '24px' }}>
-                    <button
-                      onClick={() => toggleCycleExpansion(index)}
-                      style={{
-                        background: 'none',
-                        border: 'none',
-                        color: 'var(--accent-red)',
-                        fontWeight: 700,
-                        fontSize: '0.82rem',
-                        cursor: 'pointer',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '4px',
-                        padding: '4px 0',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.5px',
-                        transition: 'opacity 0.2s'
-                      }}
-                      onMouseEnter={(e) => e.target.style.opacity = '0.8'}
-                      onMouseLeave={(e) => e.target.style.opacity = '1'}
-                    >
-                      {expandedCycles[index] ? 'Ocultar detalles' : 'Ver más detalles'}
-                      <ChevronRight 
-                        size={14} 
-                        style={{ 
-                          transform: expandedCycles[index] ? 'rotate(90deg)' : 'none',
-                          transition: 'transform 0.25s ease'
-                        }} 
-                      />
-                    </button>
-
-                    {expandedCycles[index] && (
-                      <div style={{ 
-                        marginTop: '16px', 
-                        padding: '16px', 
-                        backgroundColor: '#f8fafc', 
-                        borderRadius: '12px', 
-                        border: '1px solid var(--border-color)',
-                        textAlign: 'left',
-                        animation: 'heroFadeIn 0.25s ease-out forwards'
-                      }}>
-                        <span style={{ fontSize: '0.68rem', fontWeight: 800, color: 'var(--text-secondary)', display: 'block', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                          Beneficios del Ciclo:
-                        </span>
-                        <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'flex', flexDirection: 'column', gap: '6px', fontWeight: 500 }}>
-                          {cycle.features.map((feat, fIdx) => (
-                            <li key={fIdx}>{feat}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div>
-                  <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '20px', marginBottom: '24px' }}>
-                    <span style={{ fontSize: '0.72rem', fontWeight: 800, color: 'var(--text-secondary)', display: 'block', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                      ASIGNATURAS INCLUIDAS
-                    </span>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                      {cycle.subjects.map((sub, sIdx) => (
-                        <div key={sIdx} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', color: 'var(--text-primary)', fontWeight: 500 }}>
-                          <CheckCircle2 size={15} color="var(--accent-red)" />
-                          {sub}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div style={{ display: 'flex', gap: '10px' }}>
-                    <button 
-                      onClick={() => navigate('/login')} 
-                      className="btn btn-secondary hover-scale" 
-                      style={{ flex: 1, padding: '10px 12px', fontSize: '0.85rem', backgroundColor: '#ffffff', borderColor: 'var(--border-color)', color: 'var(--text-primary)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.3px' }}
-                    >
-                      INGRESAR
-                    </button>
-                    <a 
-                      href={getWhatsappLink(cycle.title)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn btn-primary hover-scale" 
-                      style={{ 
-                        flex: 1.6, 
-                        padding: '10px 12px', 
-                        fontSize: '0.85rem', 
-                        backgroundColor: '#25D366', 
-                        borderColor: '#25D366',
-                        color: '#ffffff',
-                        boxShadow: '0 4px 10px rgba(37, 211, 102, 0.15)',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '6px',
-                        fontWeight: 700,
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.3px'
-                      }}
-                    >
-                      <MessageCircle size={16} />
-                      MATRICULARSE
-                    </a>
-                  </div>
-                </div>
-              </div>
-            ))}
+      {/* Call to Action Banner */}
+      <section style={{ padding: '90px 0', textAlign: 'center', zIndex: 1, position: 'relative' }}>
+        <div className="container" style={{ maxWidth: '700px' }}>
+          <h2 className="scroll-reveal" style={{ fontSize: '2.2rem', fontWeight: 900, marginBottom: '16px', letterSpacing: '-0.5px' }}>
+            ¿LISTO PARA COMENZAR TU PREPARACIÓN?
+          </h2>
+          <div className="scroll-reveal" style={{ width: '60px', height: '3px', backgroundColor: 'var(--accent-red)', margin: '14px auto 20px auto', borderRadius: '2px' }} />
+          <p className="scroll-reveal delay-1" style={{ color: 'var(--text-secondary)', marginBottom: '36px', fontSize: '1.05rem', lineHeight: 1.6, fontWeight: 500 }}>
+            Inscríbete hoy en nuestro ciclo "Matemáticas desde Cero" o solicita informes para preparación universitaria de Cálculo y Repasos UNI. ¡Logra tus metas académicas con Ulema!
+          </p>
+          <div className="scroll-reveal delay-2">
+            <button 
+              onClick={() => navigate('/ciclos')}
+              className="btn btn-primary hover-scale"
+              style={{ 
+                padding: '14px 32px', 
+                fontSize: '1rem', 
+                backgroundColor: 'var(--accent-red)', 
+                borderColor: 'var(--accent-red)', 
+                fontWeight: 700, 
+                boxShadow: '0 6px 20px rgba(204, 13, 57, 0.18)',
+                borderRadius: '30px'
+              }}
+            >
+              Explorar Ciclos Académicos
+              <ChevronRight size={18} />
+            </button>
           </div>
         </div>
       </section>
-
-      {/* Docente / Director Section */}
-      <section id="docente" style={{ padding: '120px 0 100px 0', backgroundColor: '#f8fafc', borderTop: '1px solid var(--border-color)', position: 'relative', zIndex: 1 }}>
-        <div className="container" style={{ maxWidth: '800px' }}>
-          <div className="scroll-reveal" style={{ textAlign: 'center', marginBottom: '60px' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent-red)', textTransform: 'uppercase', letterSpacing: '2px', display: 'block', marginBottom: '10px' }}>NUESTRO FUNDADOR</span>
-            <h2 style={{ fontSize: '2.1rem', color: 'var(--text-primary)', fontWeight: 900, letterSpacing: '-0.8px', textTransform: 'uppercase' }}>FUNDADOR Y DIRECTOR</h2>
-            <div style={{ width: '60px', height: '3px', backgroundColor: 'var(--accent-red)', margin: '14px auto 0 auto', borderRadius: '2px' }} />
-          </div>
-
-          <div className="scroll-reveal" style={{ 
-            backgroundColor: '#ffffff', 
-            borderRadius: '24px', 
-            border: '1px solid var(--border-color)', 
-            boxShadow: '0 10px 40px rgba(0, 0, 0, 0.03)',
-            padding: '54px 36px 42px 36px',
-            textAlign: 'center',
-            position: 'relative',
-            marginTop: '80px'
-          }}>
-            {/* Profile image with white border and drop shadow */}
-            <div style={{
-              position: 'absolute',
-              top: '-70px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: '140px',
-              height: '140px',
-              borderRadius: '50%',
-              border: '6px solid #ffffff',
-              boxShadow: '0 8px 30px rgba(0, 0, 0, 0.12)',
-              overflow: 'hidden',
-              backgroundColor: '#f8fafc'
-            }}>
-              <img 
-                src="/Riudin Acuña.jpeg" 
-                alt="Riudin Acuña" 
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
-              />
-            </div>
-
-            <div style={{ marginTop: '70px' }}>
-              <span style={{ 
-                fontSize: '0.75rem', 
-                backgroundColor: 'var(--accent-red-muted)', 
-                padding: '6px 16px', 
-                borderRadius: '20px', 
-                color: 'var(--accent-red)', 
-                fontWeight: 800,
-                textTransform: 'uppercase',
-                letterSpacing: '1px'
-              }}>
-                Fundador Ulema
-              </span>
-
-              <h3 style={{ fontSize: '1.8rem', fontWeight: 900, color: 'var(--text-primary)', marginTop: '16px', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '-0.5px' }}>
-                Riudin Acuña
-              </h3>
-              
-              <p style={{ fontSize: '0.95rem', color: 'var(--accent-red)', fontWeight: 800, marginBottom: '24px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                Universidad Nacional de Ingeniería (UNI) - Ingeniería Estadística
-              </p>
-
-              <div style={{ maxWidth: '600px', margin: '0 auto', color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.7, fontWeight: 500 }}>
-                <p style={{ marginBottom: '16px' }}>
-                  Estudiante de la <strong>UNI</strong> con una trayectoria impecable en la enseñanza de las matemáticas. Como fundador de <strong>Ulema</strong>, lidera un equipo de docentes altamente calificados especializados en la preparación preuniversitaria y en cursos universitarios de Cálculo Diferencial e Integral.
-                </p>
-                <p>
-                  Su visión y rigurosidad aseguran que cada ciclo cuente con la mejor plana docente y una metodología enfocada en desarrollar el pensamiento crítico de los estudiantes, garantizando el máximo rendimiento académico.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Info Section */}
-      <section id="contacto" style={{ padding: '80px 0', backgroundColor: '#ffffff', borderTop: '1px solid var(--border-color)', position: 'relative', zIndex: 1 }}>
-        <div className="container" style={{ maxWidth: '900px' }}>
-          <div className="scroll-reveal" style={{ textAlign: 'center', marginBottom: '48px' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent-red)', textTransform: 'uppercase', letterSpacing: '2px', display: 'block', marginBottom: '10px' }}>CONTACTANOS</span>
-            <h2 style={{ fontSize: '2.1rem', color: 'var(--text-primary)', fontWeight: 900, letterSpacing: '-0.8px', textTransform: 'uppercase' }}>PONTE EN CONTACTO</h2>
-            <div style={{ width: '60px', height: '3px', backgroundColor: 'var(--accent-red)', margin: '14px auto 0 auto', borderRadius: '2px' }} />
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', fontWeight: 500, marginTop: '14px' }}>
-              Tienes dudas sobre los inicios de clases o formas de pago? Escribenos o llamanos directamente.
-            </p>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
-            <div className="scroll-reveal delay-1 contact-card" style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', padding: '24px', backgroundColor: '#f8fafc', borderRadius: '12px', border: '1px solid var(--border-color)', cursor: 'default' }}>
-              <div style={{ width: '42px', height: '42px', borderRadius: '10px', backgroundColor: 'var(--accent-red-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <Phone size={20} color="var(--accent-red)" />
-              </div>
-              <div>
-                <h4 style={{ fontSize: '0.95rem', fontWeight: 800, marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.3px' }}>TELEFONO / WHATSAPP</h4>
-                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 600 }}>+51 907 040 190</p>
-                <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '4px' }}>Atencion inmediata por el director de admisiones.</p>
-              </div>
-            </div>
-
-            <div className="scroll-reveal delay-2 contact-card" style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', padding: '24px', backgroundColor: '#f8fafc', borderRadius: '12px', border: '1px solid var(--border-color)', cursor: 'default' }}>
-              <div style={{ width: '42px', height: '42px', borderRadius: '10px', backgroundColor: 'var(--accent-red-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <Mail size={20} color="var(--accent-red)" />
-              </div>
-              <div>
-                <h4 style={{ fontSize: '0.95rem', fontWeight: 800, marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.3px' }}>CORREO ELECTRONICO</h4>
-                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 600 }}>contacto@ulema.edu.pe</p>
-                <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '4px' }}>Soporte administrativo y consultas generales.</p>
-              </div>
-            </div>
-
-            <div className="scroll-reveal delay-3 contact-card" style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', padding: '24px', backgroundColor: '#f8fafc', borderRadius: '12px', border: '1px solid var(--border-color)', cursor: 'default' }}>
-              <div style={{ width: '42px', height: '42px', borderRadius: '10px', backgroundColor: 'var(--accent-red-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                <MapPin size={20} color="var(--accent-red)" />
-              </div>
-              <div>
-                <h4 style={{ fontSize: '0.95rem', fontWeight: 800, marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.3px' }}>SEDE CENTRAL</h4>
-                <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', fontWeight: 600 }}>Lima, Peru</p>
-                <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '4px' }}>Preparacion presencial y virtual de alto nivel.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Floating WhatsApp Widget */}
-      <a 
-        href={`https://wa.me/${whatsappNumber}?text=Hola,%20deseo%20más%20información%20sobre%20el%20Grupo%20de%20Estudio%20ULEMA.`} 
-        target="_blank" 
-        rel="noopener noreferrer"
-        className="whatsapp-float"
-        style={{
-          position: 'fixed',
-          bottom: '30px',
-          right: '30px',
-          backgroundColor: '#25D366',
-          color: '#ffffff',
-          width: '56px',
-          height: '56px',
-          borderRadius: '50%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1), 0 0 10px rgba(37, 211, 102, 0.3)',
-          zIndex: 99,
-          textDecoration: 'none'
-        }}
-      >
-        <MessageCircle size={30} />
-      </a>
-
-      {/* Footer Premium */}
-      <footer style={{ 
-        borderTop: '1px solid var(--border-color)', 
-        backgroundColor: '#0f172a', 
-        color: '#94a3b8', 
-        fontSize: '0.85rem',
-        zIndex: 1,
-        position: 'relative'
-      }}>
-        {/* Decorative red line */}
-        <div style={{ height: '3px', background: 'linear-gradient(90deg, var(--accent-red), #e11d48, var(--accent-red))' }} />
-        <div style={{ padding: '40px 0' }}>
-          <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-              <span style={{ color: '#ffffff', fontWeight: 900, fontSize: '1.2rem', letterSpacing: '-0.3px' }}>ULEMA</span>
-              <span style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>Grupo de Estudio</span>
-            </div>
-            <div style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 500, textAlign: 'right' }}>
-              <div>&copy; {new Date().getFullYear()} ULEMA. Todos los derechos reservados.</div>
-              <div style={{ marginTop: '4px', fontSize: '0.75rem' }}>Plataforma de preparacion academica de alto nivel.</div>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
