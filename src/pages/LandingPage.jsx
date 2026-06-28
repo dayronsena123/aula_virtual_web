@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BookOpen, GraduationCap, ChevronRight, CheckCircle2, Shield, MessageCircle, Phone, Mail, MapPin, ArrowRight } from 'lucide-react';
+import { BookOpen, GraduationCap, ChevronRight, CheckCircle2, Shield, MessageCircle, Phone, Mail, MapPin, ArrowRight, Menu, X } from 'lucide-react';
 
 // Scroll animation hook
 function useScrollReveal() {
@@ -28,6 +28,8 @@ export default function LandingPage() {
   const navigate = useNavigate();
   const pageRef = useScrollReveal();
 
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const whatsappNumber = "51907040190";
   const getWhatsappLink = (cycleName) => {
     const text = encodeURIComponent(`Hola, deseo solicitar información e inscribirme en el ciclo: ${cycleName} del Grupo de Estudio ULEMA.`);
@@ -36,22 +38,32 @@ export default function LandingPage() {
 
   const cycles = [
     {
-      title: "Repaso Intensivo UNI (Matematica)",
-      description: "Preparacion avanzada con foco en el examen de admision UNI. Domina los temas mas recurrentes del temario de matematicas.",
-      subjects: ["Algebra", "Aritmetica", "Geometria", "Trigonometria"],
-      badge: "PREUNIVERSITARIO"
+      title: "Matemáticas desde Cero",
+      description: "Construye hoy tu base, asegura tu futuro universitario y domina las matemáticas paso a paso.",
+      subjects: ["Aritmética desde Cero", "Álgebra", "Geometría", "Trigonometría"],
+      badge: "CICLO BASE",
+      price: "S/. 39"
     },
     {
-      title: "Calculo Diferencial",
-      description: "Curso teorico-practico de nivel universitario enfocado en el analisis de funciones, limites, continuidad y derivadas.",
-      subjects: ["Funciones reales", "Limites y Continuidad", "Derivadas y Reglas", "Aplicaciones de la derivada"],
-      badge: "UNIVERSITARIO"
+      title: "Repaso Intensivo UNI (Matemática)",
+      description: "Preparación avanzada con foco en el examen de admisión UNI. Domina los temas más recurrentes del temario de matemáticas.",
+      subjects: ["Álgebra", "Aritmética", "Geometría", "Trigonometría"],
+      badge: "PREUNIVERSITARIO",
+      price: "S/."
     },
     {
-      title: "Calculo Integral",
-      description: "Domina las tecnicas de integracion, teoremas fundamentales del calculo y sus aplicaciones en areas, volumenes y fisica.",
-      subjects: ["Integrales Indefinidas", "Metodos de Integracion", "Integral Definida", "Areas y Volumenes de Revolucion"],
-      badge: "UNIVERSITARIO"
+      title: "Cálculo Diferencial",
+      description: "Curso teórico-práctico de nivel universitario enfocado en el análisis de funciones, límites, continuidad y derivadas.",
+      subjects: ["Funciones reales", "Límites y Continuidad", "Derivadas y Reglas", "Aplicaciones de la derivada"],
+      badge: "UNIVERSITARIO",
+      price: "S/."
+    },
+    {
+      title: "Cálculo Integral",
+      description: "Domina las técnicas de integración, teoremas fundamentales del cálculo y sus aplicaciones en áreas, volúmenes y física.",
+      subjects: ["Integrales Indefinidas", "Métodos de Integración", "Integral Definida", "Áreas y Volúmenes de Revolución"],
+      badge: "UNIVERSITARIO",
+      price: "S/."
     }
   ];
 
@@ -170,10 +182,18 @@ export default function LandingPage() {
           50% { transform: translateY(-5px) scale(1.05); }
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 991px) {
           #landing-navbar {
             display: none !important;
           }
+          #landing-action-buttons {
+            display: none !important;
+          }
+          #hamburger-menu-btn {
+            display: flex !important;
+          }
+        }
+        @media (max-width: 768px) {
           .hero-heading {
             font-size: 2.2rem !important;
           }
@@ -212,24 +232,24 @@ export default function LandingPage() {
         padding: '16px 0', 
         position: 'sticky', 
         top: 0, 
-        backgroundColor: 'rgba(255, 255, 255, 0.9)', 
+        backgroundColor: 'rgba(255, 255, 255, 0.95)', 
         backdropFilter: 'blur(16px)',
         zIndex: 50,
         boxShadow: '0 2px 10px rgba(0, 0, 0, 0.02)'
       }}>
-        <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'relative' }}>
           {/* Logo */}
-          <div style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer' }} onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+          <div style={{ display: 'flex', flexDirection: 'column', cursor: 'pointer', zIndex: 51 }} onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setMenuOpen(false); }}>
             <span style={{ fontSize: '1.6rem', fontWeight: 900, color: 'var(--text-primary)', letterSpacing: '-0.5px', lineHeight: 1.1 }}>ULEMA</span>
             <span style={{ fontSize: '0.68rem', color: 'var(--accent-red)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1.5px' }}>
               Grupo de Estudio
             </span>
           </div>
 
-          {/* Navigation Links */}
+          {/* Navigation Links (Desktop) */}
           <nav style={{ display: 'flex', gap: '28px', alignItems: 'center' }} id="landing-navbar">
-            <button className="nav-link-btn" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-              Inicio
+            <button className="nav-link-btn" onClick={() => scrollToSection('docente')}>
+              Docente
             </button>
             <button className="nav-link-btn" onClick={() => scrollToSection('ciclos')}>
               Ciclos
@@ -239,8 +259,8 @@ export default function LandingPage() {
             </button>
           </nav>
           
-          {/* Action Buttons */}
-          <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+          {/* Action Buttons (Desktop) */}
+          <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }} id="landing-action-buttons">
             <button 
               onClick={() => navigate('/login')} 
               className="btn btn-primary"
@@ -277,6 +297,109 @@ export default function LandingPage() {
               Panel Admin
             </button>
           </div>
+
+          {/* Hamburger Menu Button (Mobile) */}
+          <button
+            id="hamburger-menu-btn"
+            onClick={() => setMenuOpen(!menuOpen)}
+            style={{
+              display: 'none',
+              background: 'none',
+              border: 'none',
+              color: 'var(--text-primary)',
+              cursor: 'pointer',
+              padding: '6px',
+              zIndex: 51,
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            {menuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+
+          {/* Mobile Menu Dropdown Panel */}
+          {menuOpen && (
+            <div style={{
+              position: 'absolute',
+              top: 'calc(100% + 16px)',
+              left: '16px',
+              right: '16px',
+              backgroundColor: '#ffffff',
+              borderRadius: '16px',
+              border: '1px solid var(--border-color)',
+              boxShadow: '0 15px 35px rgba(0,0,0,0.08)',
+              padding: '24px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '16px',
+              zIndex: 49,
+              animation: 'heroFadeIn 0.2s ease-out forwards'
+            }}>
+              <button 
+                className="nav-link-btn" 
+                style={{ textAlign: 'left', width: '100%', padding: '10px 0' }}
+                onClick={() => { scrollToSection('docente'); setMenuOpen(false); }}
+              >
+                Docente
+              </button>
+              <button 
+                className="nav-link-btn" 
+                style={{ textAlign: 'left', width: '100%', padding: '10px 0' }}
+                onClick={() => { scrollToSection('ciclos'); setMenuOpen(false); }}
+              >
+                Ciclos
+              </button>
+              <button 
+                className="nav-link-btn" 
+                style={{ textAlign: 'left', width: '100%', padding: '10px 0' }}
+                onClick={() => { scrollToSection('contacto'); setMenuOpen(false); }}
+              >
+                Contacto
+              </button>
+              
+              <div style={{ height: '1px', backgroundColor: 'var(--border-color)', margin: '4px 0' }} />
+
+              <button 
+                onClick={() => { navigate('/login'); setMenuOpen(false); }} 
+                className="btn btn-primary"
+                style={{ 
+                  width: '100%',
+                  padding: '12px', 
+                  fontSize: '0.9rem', 
+                  backgroundColor: 'var(--accent-red)',
+                  borderColor: 'var(--accent-red)',
+                  color: '#ffffff',
+                  boxShadow: '0 4px 10px rgba(204, 13, 57, 0.18)',
+                  fontWeight: 700,
+                  borderRadius: '8px',
+                  justifyContent: 'center',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}
+              >
+                Aula Virtual
+                <ChevronRight size={16} />
+              </button>
+
+              <button 
+                onClick={() => { navigate('/login?admin=true'); setMenuOpen(false); }} 
+                style={{ 
+                  background: 'none', 
+                  border: 'none', 
+                  color: 'var(--text-secondary)', 
+                  fontSize: '0.88rem', 
+                  fontWeight: 700, 
+                  cursor: 'pointer',
+                  textAlign: 'center',
+                  padding: '10px 0',
+                  textDecoration: 'underline'
+                }}
+              >
+                Panel Admin
+              </button>
+            </div>
+          )}
         </div>
       </header>
 
@@ -415,8 +538,13 @@ export default function LandingPage() {
                     }}>
                       {cycle.badge}
                     </span>
-                    <div style={{ width: '36px', height: '36px', borderRadius: '10px', backgroundColor: 'var(--accent-red-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <BookOpen size={18} color="var(--accent-red)" />
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                      <span style={{ fontSize: '1.25rem', fontWeight: 900, color: 'var(--text-primary)' }}>
+                        {cycle.price}
+                      </span>
+                      {cycle.price === "S/. 39" && (
+                        <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)', fontWeight: 800, textTransform: 'uppercase' }}>/ mes</span>
+                      )}
                     </div>
                   </div>
 
@@ -481,6 +609,81 @@ export default function LandingPage() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Docente / Director Section */}
+      <section id="docente" style={{ padding: '120px 0 100px 0', backgroundColor: '#f8fafc', borderTop: '1px solid var(--border-color)', position: 'relative', zIndex: 1 }}>
+        <div className="container" style={{ maxWidth: '800px' }}>
+          <div className="scroll-reveal" style={{ textAlign: 'center', marginBottom: '60px' }}>
+            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--accent-red)', textTransform: 'uppercase', letterSpacing: '2px', display: 'block', marginBottom: '10px' }}>NUESTRO DOCENTE</span>
+            <h2 style={{ fontSize: '2.1rem', color: 'var(--text-primary)', fontWeight: 900, letterSpacing: '-0.8px', textTransform: 'uppercase' }}>DOCENTE PRINCIPAL Y FUNDADOR</h2>
+            <div style={{ width: '60px', height: '3px', backgroundColor: 'var(--accent-red)', margin: '14px auto 0 auto', borderRadius: '2px' }} />
+          </div>
+
+          <div className="scroll-reveal" style={{ 
+            backgroundColor: '#ffffff', 
+            borderRadius: '24px', 
+            border: '1px solid var(--border-color)', 
+            boxShadow: '0 10px 40px rgba(0, 0, 0, 0.03)',
+            padding: '54px 36px 42px 36px',
+            textAlign: 'center',
+            position: 'relative',
+            marginTop: '80px'
+          }}>
+            {/* Profile image with white border and drop shadow */}
+            <div style={{
+              position: 'absolute',
+              top: '-70px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '140px',
+              height: '140px',
+              borderRadius: '50%',
+              border: '6px solid #ffffff',
+              boxShadow: '0 8px 30px rgba(0, 0, 0, 0.12)',
+              overflow: 'hidden',
+              backgroundColor: '#f8fafc'
+            }}>
+              <img 
+                src="/Riudin Acuña.jpeg" 
+                alt="Riudin Acuña" 
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+              />
+            </div>
+
+            <div style={{ marginTop: '70px' }}>
+              <span style={{ 
+                fontSize: '0.75rem', 
+                backgroundColor: 'var(--accent-red-muted)', 
+                padding: '6px 16px', 
+                borderRadius: '20px', 
+                color: 'var(--accent-red)', 
+                fontWeight: 800,
+                textTransform: 'uppercase',
+                letterSpacing: '1px'
+              }}>
+                Docente UNI
+              </span>
+
+              <h3 style={{ fontSize: '1.8rem', fontWeight: 900, color: 'var(--text-primary)', marginTop: '16px', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '-0.5px' }}>
+                Riudin Acuña
+              </h3>
+              
+              <p style={{ fontSize: '0.95rem', color: 'var(--accent-red)', fontWeight: 800, marginBottom: '24px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Universidad Nacional de Ingeniería (UNI) - Ingeniería Estadística
+              </p>
+
+              <div style={{ maxWidth: '600px', margin: '0 auto', color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: 1.7, fontWeight: 500 }}>
+                <p style={{ marginBottom: '16px' }}>
+                  Estudiante y destacado docente de la <strong>UNI</strong>, con una trayectoria impecable en la enseñanza de las matemáticas. Especializado tanto en la preparación de nivel preuniversitario como en el dictado de cursos universitarios de Cálculo Diferencial e Integral.
+                </p>
+                <p>
+                  Su método riguroso y dinámico asegura que el estudiante adquiera una base sólida, enfocándose en la resolución de problemas con lógica y precisión para garantizar el máximo rendimiento académico y el ingreso a las universidades más exigentes del país.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>

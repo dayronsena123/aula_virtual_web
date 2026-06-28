@@ -186,9 +186,17 @@ $$ language plpgsql security definer;
 -- 4. INSERTAR DATOS POR DEFECTO (CICLOS Y ASIGNATURAS)
 -- Ciclos
 insert into public.cycles (id, name, description) values
+  ('c0500000-0000-0000-0000-000000000000', 'Matemáticas desde Cero', 'Construye hoy tu base, asegura tu futuro y entra a la universidad que deseas.'),
   ('c1000000-0000-0000-0000-000000000001', 'Repaso Intensivo UNI (Matemática)', 'Ciclo intensivo enfocado en resolver temas de examen UNI.'),
   ('c2000000-0000-0000-0000-000000000002', 'Cálculo Diferencial', 'Curso universitario enfocado en límites, continuidad y derivadas.'),
   ('c3000000-0000-0000-0000-000000000003', 'Cálculo Integral', 'Curso universitario de integraciones y sus aplicaciones.');
+
+-- Asignaturas para Matemáticas desde Cero
+insert into public.subjects (cycle_id, name) values
+  ('c0500000-0000-0000-0000-000000000000', 'Aritmética desde Cero'),
+  ('c0500000-0000-0000-0000-000000000000', 'Álgebra'),
+  ('c0500000-0000-0000-0000-000000000000', 'Geometría'),
+  ('c0500000-0000-0000-0000-000000000000', 'Trigonometría');
 
 -- Asignaturas para Repaso UNI
 insert into public.subjects (cycle_id, name) values
