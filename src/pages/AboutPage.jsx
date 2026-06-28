@@ -120,13 +120,13 @@ export default function AboutPage() {
 
               <div style={{ maxWidth: '650px', margin: '0 auto', color: 'var(--text-secondary)', fontSize: '0.98rem', lineHeight: 1.7, fontWeight: 500, textAlign: 'justify' }}>
                 <p style={{ marginBottom: '16px' }}>
-                  Como estudiante de **Ingeniería Estadística** en la prestigiosa **Universidad Nacional de Ingeniería (UNI)**, Riudin Acuña cuenta con una destacada trayectoria en la enseñanza de las matemáticas. Su pasión por los números y la pedagogía lo llevó a fundar **Ulema**, un grupo de estudio diseñado para romper los esquemas tradicionales de aprendizaje y proveer bases sólidas de alta exigencia.
+                  Como estudiante de <strong>Ingeniería Estadística</strong> en la prestigiosa <strong>Universidad Nacional de Ingeniería (UNI)</strong>, Riudin Acuña cuenta con una destacada trayectoria en la enseñanza de las matemáticas. Su pasión por los números y la pedagogía lo llevó a fundar <strong>Ulema</strong>, un grupo de estudio diseñado para romper los esquemas tradicionales de aprendizaje y proveer bases sólidas de alta exigencia.
                 </p>
                 <p style={{ marginBottom: '16px' }}>
                   Riudin coordina y lidera a un equipo de profesores sumamente capacitados, dedicados a orientar a los alumnos en sus metas preuniversitarias (UNI, SAN MARCOS, etc.) y cursos avanzados universitarios. 
                 </p>
                 <p>
-                  Bajo su dirección, **Ulema** se consolida como una plataforma educativa de alto rendimiento con metodología basada en disciplina, método, precisión y resultados, ofreciendo las herramientas tecnológicas de intranet para que el estudio nunca se detenga.
+                  Bajo su dirección, <strong>Ulema</strong> se consolida como una plataforma educativa de alto rendimiento con metodología basada en disciplina, método, precisión y resultados, ofreciendo las herramientas tecnológicas de intranet para que el estudio nunca se detenga.
                 </p>
               </div>
             </div>
