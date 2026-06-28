@@ -29,6 +29,14 @@ export default function LandingPage() {
   const pageRef = useScrollReveal();
 
   const [menuOpen, setMenuOpen] = useState(false);
+  const [expandedCycles, setExpandedCycles] = useState({});
+
+  const toggleCycleExpansion = (index) => {
+    setExpandedCycles(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  };
 
   const whatsappNumber = "51907040190";
   const getWhatsappLink = (cycleName) => {
@@ -42,28 +50,53 @@ export default function LandingPage() {
       description: "Construye hoy tu base, asegura tu futuro universitario y domina las matemáticas paso a paso.",
       subjects: ["Aritmética desde Cero", "Álgebra", "Geometría", "Trigonometría"],
       badge: "CICLO BASE",
-      price: "S/. 39"
+      price: "S/. 39",
+      features: [
+        "1 hora diaria en vivo (Lunes a Viernes 7:00 PM - 8:00 PM)",
+        "Acceso ilimitado a grabaciones de clases las 24 horas",
+        "Pizarras virtuales de cada sesión en formato PDF",
+        "Sistema de constancia y participación interactiva",
+        "Sorteos trimestrales de tablets, becas y más"
+      ]
     },
     {
       title: "Repaso Intensivo UNI (Matemática)",
       description: "Preparación avanzada con foco en el examen de admisión UNI. Domina los temas más recurrentes del temario de matemáticas.",
       subjects: ["Álgebra", "Aritmética", "Geometría", "Trigonometría"],
       badge: "PREUNIVERSITARIO",
-      price: "S/."
+      price: "S/.",
+      features: [
+        "Resolución guiada de exámenes de admisión UNI anteriores",
+        "Ejercicios y problemas selectos de nivel avanzado",
+        "Material académico descargable en formato PDF",
+        "Asignaturas completas con docentes especializados"
+      ]
     },
     {
       title: "Cálculo Diferencial",
       description: "Curso teórico-práctico de nivel universitario enfocado en el análisis de funciones, límites, continuidad y derivadas.",
       subjects: ["Funciones reales", "Límites y Continuidad", "Derivadas y Reglas", "Aplicaciones de la derivada"],
       badge: "UNIVERSITARIO",
-      price: "S/."
+      price: "S/.",
+      features: [
+        "Temario adaptado al currículo universitario nacional",
+        "Explicación teórica paso a paso de fórmulas y teoremas",
+        "Prácticas y exámenes pasados resueltos en vivo",
+        "Material de apuntes teóricos y pizarras virtuales"
+      ]
     },
     {
       title: "Cálculo Integral",
       description: "Domina las técnicas de integración, teoremas fundamentales del cálculo y sus aplicaciones en áreas, volúmenes y física.",
       subjects: ["Integrales Indefinidas", "Métodos de Integración", "Integral Definida", "Áreas y Volúmenes de Revolución"],
       badge: "UNIVERSITARIO",
-      price: "S/."
+      price: "S/.",
+      features: [
+        "Análisis profundo de técnicas de integración avanzada",
+        "Aplicación física y geométrica de las integrales",
+        "Soporte con diapositivas y pizarras digitales PDF",
+        "Ejercicios resueltos de alta complejidad de exámenes reales"
+      ]
     }
   ];
 
@@ -248,11 +281,14 @@ export default function LandingPage() {
 
           {/* Navigation Links (Desktop) */}
           <nav style={{ display: 'flex', gap: '28px', alignItems: 'center' }} id="landing-navbar">
-            <button className="nav-link-btn" onClick={() => scrollToSection('docente')}>
-              Docente
+            <button className="nav-link-btn" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+              Inicio
             </button>
             <button className="nav-link-btn" onClick={() => scrollToSection('ciclos')}>
               Ciclos
+            </button>
+            <button className="nav-link-btn" onClick={() => scrollToSection('docente')}>
+              Sobre nosotros
             </button>
             <button className="nav-link-btn" onClick={() => scrollToSection('contacto')}>
               Contacto
@@ -338,9 +374,9 @@ export default function LandingPage() {
               <button 
                 className="nav-link-btn" 
                 style={{ textAlign: 'left', width: '100%', padding: '10px 0' }}
-                onClick={() => { scrollToSection('docente'); setMenuOpen(false); }}
+                onClick={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setMenuOpen(false); }}
               >
-                Docente
+                Inicio
               </button>
               <button 
                 className="nav-link-btn" 
@@ -348,6 +384,13 @@ export default function LandingPage() {
                 onClick={() => { scrollToSection('ciclos'); setMenuOpen(false); }}
               >
                 Ciclos
+              </button>
+              <button 
+                className="nav-link-btn" 
+                style={{ textAlign: 'left', width: '100%', padding: '10px 0' }}
+                onClick={() => { scrollToSection('docente'); setMenuOpen(false); }}
+              >
+                Sobre nosotros
               </button>
               <button 
                 className="nav-link-btn" 
@@ -552,9 +595,63 @@ export default function LandingPage() {
                     {cycle.title}
                   </h3>
                   
-                  <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '24px', lineHeight: 1.5, fontWeight: 500 }}>
+                  <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '16px', lineHeight: 1.5, fontWeight: 500 }}>
                     {cycle.description}
                   </p>
+
+                  {/* Toggle Collapsible Details (Ver más) */}
+                  <div style={{ marginBottom: '24px' }}>
+                    <button
+                      onClick={() => toggleCycleExpansion(index)}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: 'var(--accent-red)',
+                        fontWeight: 700,
+                        fontSize: '0.82rem',
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        padding: '4px 0',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px',
+                        transition: 'opacity 0.2s'
+                      }}
+                      onMouseEnter={(e) => e.target.style.opacity = '0.8'}
+                      onMouseLeave={(e) => e.target.style.opacity = '1'}
+                    >
+                      {expandedCycles[index] ? 'Ocultar detalles' : 'Ver más detalles'}
+                      <ChevronRight 
+                        size={14} 
+                        style={{ 
+                          transform: expandedCycles[index] ? 'rotate(90deg)' : 'none',
+                          transition: 'transform 0.25s ease'
+                        }} 
+                      />
+                    </button>
+
+                    {expandedCycles[index] && (
+                      <div style={{ 
+                        marginTop: '16px', 
+                        padding: '16px', 
+                        backgroundColor: '#f8fafc', 
+                        borderRadius: '12px', 
+                        border: '1px solid var(--border-color)',
+                        textAlign: 'left',
+                        animation: 'heroFadeIn 0.25s ease-out forwards'
+                      }}>
+                        <span style={{ fontSize: '0.68rem', fontWeight: 800, color: 'var(--text-secondary)', display: 'block', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                          Beneficios del Ciclo:
+                        </span>
+                        <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'flex', flexDirection: 'column', gap: '6px', fontWeight: 500 }}>
+                          {cycle.features.map((feat, fIdx) => (
+                            <li key={fIdx}>{feat}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div>
