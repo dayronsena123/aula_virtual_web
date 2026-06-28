@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import WhatsappFloat from '../components/WhatsappFloat';
 
 function useScrollReveal() {
   const ref = useRef(null);
@@ -136,6 +137,7 @@ export default function AboutPage() {
       </section>
 
       <Footer />
+      <WhatsappFloat />
     </div>
   );
 }

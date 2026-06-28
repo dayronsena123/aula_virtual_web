@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ChevronRight, MessageCircle, ArrowRight } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import WhatsappFloat from '../components/WhatsappFloat';
 
 function useScrollReveal() {
   const ref = useRef(null);
@@ -191,6 +192,7 @@ export default function LandingPage() {
       </section>
 
       <Footer />
+      <WhatsappFloat />
     </div>
   );
 }
